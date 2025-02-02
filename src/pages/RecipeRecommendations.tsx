@@ -51,7 +51,7 @@ export default function RecipeRecommendationsPage() {
       </div>
 
       {selectedRecipe && (
-        <Dialog open={!!selectedRecipe} onClose={handleCloseModal}>
+        <Dialog open={!!selectedRecipe} onClose={handleCloseModal} onClickOutside={handleCloseModal}>
           <DialogOverlay className="fixed inset-0 bg-black opacity-30" onClick={handleCloseModal} />
           <motion.div 
             className="fixed inset-0 flex items-center justify-center"
@@ -60,7 +60,7 @@ export default function RecipeRecommendationsPage() {
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.3 }}
           >
-            <DialogContent className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <DialogContent className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6" onClick={(e) => e.stopPropagation()}>
               <h2 className="text-2xl font-bold mb-4">{selectedRecipe.name}</h2>
               <img src={selectedRecipe.image} alt={selectedRecipe.name} className="w-full h-48 object-cover mb-4" />
               <h3 className="text-xl font-semibold mb-2">Ingredientes</h3>
