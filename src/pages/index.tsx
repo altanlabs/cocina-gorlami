@@ -43,7 +43,7 @@ export default function IndexPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {/* Example Recipe Card */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-            <img src="https://via.placeholder.com/300x200?text=Receta+1" alt="Receta 1" className="w-full h-32 sm:h-48 object-cover" />
+            <img src="https://via.placeholder.com/300x200?text=Receta+1" alt="Receta 1" className="w-full h-auto object-cover" />
             <div className="p-4">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-white">Receta 1</h3>
               <p className="text-gray-600 dark:text-gray-300">Descripción breve de la receta.</p>
