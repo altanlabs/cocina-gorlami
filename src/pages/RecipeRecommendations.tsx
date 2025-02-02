@@ -52,7 +52,7 @@ export default function RecipeRecommendationsPage() {
 
       {selectedRecipe && (
         <Dialog open={!!selectedRecipe} onClose={handleCloseModal}>
-          <DialogOverlay className="fixed inset-0 bg-black opacity-30" />
+          <DialogOverlay className="fixed inset-0 bg-black opacity-30" onClick={handleCloseModal} />
           <motion.div 
             className="fixed inset-0 flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.9 }}
