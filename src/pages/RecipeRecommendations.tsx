@@ -1,30 +1,33 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogContent, DialogOverlay } from '@/components/ui/dialog';
+import { motion } from 'framer-motion';
+
+const sampleRecipes = [
+  { id: 1, name: 'Ensalada de Quinoa', time: '15 min', difficulty: 'Fácil', tags: ['saludable', 'rápido'], image: 'https://via.placeholder.com/300x200?text=Ensalada+de+Quinoa' },
+  { id: 2, name: 'Tacos Veganos', time: '30 min', difficulty: 'Media', tags: ['vegano', 'mexicano'], image: 'https://via.placeholder.com/300x200?text=Tacos+Veganos' },
+  { id: 3, name: 'Sopa de Tomate', time: '20 min', difficulty: 'Fácil', tags: ['sopa', 'vegetariano'], image: 'https://via.placeholder.com/300x200?text=Sopa+de+Tomate' },
+  { id: 4, name: 'Pasta al Pesto', time: '25 min', difficulty: 'Fácil', tags: ['italiano', 'rápido'], image: 'https://via.placeholder.com/300x200?text=Pasta+al+Pesto' },
+  { id: 5, name: 'Curry de Garbanzos', time: '40 min', difficulty: 'Difícil', tags: ['indio', 'vegano'], image: 'https://via.placeholder.com/300x200?text=Curry+de+Garbanzos' },
+  { id: 6, name: 'Pizza Margarita', time: '30 min', difficulty: 'Media', tags: ['italiano', 'vegetariano'], image: 'https://via.placeholder.com/300x200?text=Pizza+Margarita' },
+  { id: 7, name: 'Hamburguesa Clásica', time: '35 min', difficulty: 'Media', tags: ['americano', 'rápido'], image: 'https://via.placeholder.com/300x200?text=Hamburguesa+Clásica' },
+  { id: 8, name: 'Paella de Mariscos', time: '60 min', difficulty: 'Difícil', tags: ['español', 'mariscos'], image: 'https://via.placeholder.com/300x200?text=Paella+de+Mariscos' },
+  { id: 9, name: 'Ramen Japonés', time: '50 min', difficulty: 'Difícil', tags: ['japonés', 'sopa'], image: 'https://via.placeholder.com/300x200?text=Ramen+Japonés' },
+  { id: 10, name: 'Falafel con Hummus', time: '45 min', difficulty: 'Media', tags: ['mediterráneo', 'vegano'], image: 'https://via.placeholder.com/300x200?text=Falafel+con+Hummus' },
+];
 
 export default function RecipeRecommendationsPage() {
-  const [recipes, setRecipes] = useState([]);
-  const navigate = useNavigate();
+  const [recipes, setRecipes] = useState(sampleRecipes);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
 
-  useEffect(() => {
-    // Fetch recommended recipes based on user profile
-    const fetchRecipes = async () => {
-      // Simulate API call
-      const recommendedRecipes = [
-        { id: 1, name: 'Ensalada de Quinoa', time: '15 min', difficulty: 'Fácil' },
-        { id: 2, name: 'Tacos Veganos', time: '30 min', difficulty: 'Media' },
-        { id: 3, name: 'Sopa de Tomate', time: '20 min', difficulty: 'Fácil' },
-      ];
-      setRecipes(recommendedRecipes);
-    };
+  const handleViewRecipe = (recipe) => {
+    console.log(`Viewing recipe: ${recipe.name}`);
+    setSelectedRecipe(recipe);
+  };
 
-    fetchRecipes();
-  }, []);
-
-  const handleViewRecipe = (recipeId) => {
-    console.log(`Navigating to recipe with ID: ${recipeId}`);
-    navigate(`/recetas/${recipeId}`);
+  const handleCloseModal = () => {
+    setSelectedRecipe(null);
   };
 
   return (
@@ -33,13 +36,50 @@ export default function RecipeRecommendationsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {recipes.map((recipe) => (
           <Card key={recipe.id} className="p-4">
+            <img src={recipe.image} alt={recipe.name} className="w-full h-32 sm:h-48 object-cover mb-4" />
             <h2 className="text-xl font-semibold">{recipe.name}</h2>
             <p>Tiempo: {recipe.time}</p>
             <p>Dificultad: {recipe.difficulty}</p>
-            <Button onClick={() => handleViewRecipe(recipe.id)} className="mt-4">Ver Receta</Button>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {recipe.tags.map((tag, index) => (
+                <span key={index} className="bg-gray-200 text-gray-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{tag}</span>
+              ))}
+            </div>
+            <Button onClick={() => handleViewRecipe(recipe)} className="mt-4">Ver Receta</Button>
           </Card>
         ))}
       </div>
+
+      {selectedRecipe && (
+        <Dialog open={!!selectedRecipe} onClose={handleCloseModal}>
+          <DialogOverlay className="fixed inset-0 bg-black opacity-30" />
+          <motion.div 
+            className="fixed inset-0 flex items-center justify-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.3 }}
+          >
+            <DialogContent className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+              <h2 className="text-2xl font-bold mb-4">{selectedRecipe.name}</h2>
+              <img src={selectedRecipe.image} alt={selectedRecipe.name} className="w-full h-48 object-cover mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Ingredientes</h3>
+              <ul className="list-disc pl-5 mb-4">
+                {selectedRecipe.ingredients.map((ingredient, index) => (
+                  <li key={index}>{ingredient}</li>
+                ))}
+              </ul>
+              <h3 className="text-xl font-semibold mb-2">Instrucciones</h3>
+              <ol className="list-decimal pl-5">
+                {selectedRecipe.steps.map((step, index) => (
+                  <li key={index} className="mb-2">{step}</li>
+                ))}
+              </ol>
+              <Button onClick={handleCloseModal} className="mt-4">Cerrar</Button>
+            </DialogContent>
+          </motion.div>
+        </Dialog>
+      )}
     </div>
   );
 }
