@@ -1,5 +1,4 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { AppSidebar } from "@/components/blocks/app-sidebar-collapsible-tree";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,32 +41,18 @@ interface FooterProps {
   links?: Array<{ label: string; href: string }>;
 }
 
-interface SidebarItem {
-  label: string;
-  href: string;
-  icon?: React.ReactNode;
-  items?: SidebarItem[];
-}
-
-interface SidebarProps {
-  items: SidebarItem[];
-  defaultOpen?: boolean;
-  companyName?: string;
-  logo?: React.ReactNode;
-  footerComponent?: React.ReactNode;
-}
-
 interface LayoutProps {
-  showSidebar?: boolean;
   showHeader?: boolean;
   showFooter?: boolean;
-  sidebarConfig?: SidebarProps;
   header?: HeaderProps | false;
   footer?: FooterProps | false;
 }
 
 const DefaultNavigation: NavItem[] = [
-  { label: "About", href: "/about" },
+  { label: "Perfil", href: "/profile" },
+  { label: "Recetas", href: "/recetas" },
+  { label: "Lista de Compras", href: "/lista-de-compras" },
+  { label: "Comunidad", href: "/comunidad" },
   { label: "Contact", href: "/contact" },
   { label: "Pricing", href: "/pricing" },
 ];
@@ -94,10 +79,8 @@ const DefaultFooter: FooterProps = {
 };
 
 export function Layout({
-  showSidebar = true,
   showHeader = true,
   showFooter = true,
-  sidebarConfig,
   header = DefaultHeader,
   footer = DefaultFooter,
 }: LayoutProps) {
@@ -124,18 +107,6 @@ export function Layout({
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
-      {/* Optional Sidebar */}
-      {showSidebar && (
-        <AppSidebar 
-          className="h-full border-r border-border" 
-          items={sidebarConfig?.items} 
-          defaultOpen={sidebarConfig?.defaultOpen}
-          companyName={sidebarConfig?.companyName}
-          logo={sidebarConfig?.logo}
-          footerComponent={sidebarConfig?.footerComponent}
-        />
-      )}
-
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
         {/* Configurable Header */}

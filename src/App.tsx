@@ -8,6 +8,11 @@ import RootBoundary from "./components/errors/RootBoundary";
 import { Layout } from "./layout";
 import Index from "./pages/index";
 import NotFound from "./pages/NotFound";
+import ProfilePage from "./pages/Profile";
+import RecipeRecommendationsPage from "./pages/RecipeRecommendations";
+import ShoppingListPage from "./pages/ShoppingList";
+import CommunityPage from "./pages/Community";
+import RecipeDetailPage from "./pages/RecipeDetail";
 import { useTheme } from "./theme/use-theme";
 
 const App = () => {
@@ -17,13 +22,33 @@ const App = () => {
     {
       path: "/",
       element: (
-        <Layout showSidebar={false} showHeader={false} showFooter={false} />
+        <Layout showSidebar={true} showHeader={true} showFooter={true} />
       ),
       errorElement: <RootBoundary />,
       children: [
         {
           index: true,
           element: <Index />,
+        },
+        {
+          path: "profile",
+          element: <ProfilePage />,
+        },
+        {
+          path: "recetas",
+          element: <RecipeRecommendationsPage />,
+        },
+        {
+          path: "lista-de-compras",
+          element: <ShoppingListPage />,
+        },
+        {
+          path: "comunidad",
+          element: <CommunityPage />,
+        },
+        {
+          path: "recetas/:id",
+          element: <RecipeDetailPage />,
         },
         {
           path: "*",
