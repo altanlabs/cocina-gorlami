@@ -50,6 +50,7 @@ export default function RecetasPage() {
   const [recipes, setRecipes] = useState(sampleRecipes);
 
   const handleViewRecipe = (recipeId) => {
+    console.log(`Navigating to recipe with ID: ${recipeId}`);
     navigate(`/recetas/${recipeId}`);
   };
 
